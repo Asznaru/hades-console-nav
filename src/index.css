@@ -12,12 +12,12 @@
     --terminal-bg: 0 0% 0%;
     --terminal-primary: 0 0% 90%; /* White text */
     --terminal-secondary: 0 0% 70%; /* Light gray */
-    --terminal-accent: 263 83% 57%; /* Indigo-violet for HADES */
+    --terminal-accent: 263 30% 75%; /* Muted indigo-violet for HADES */
     --terminal-warning: 15 100% 50%; /* Orange */
     --terminal-danger: 0 100% 50%; /* Red */
     --terminal-muted: 0 0% 40%; /* Dark gray */
     --terminal-border: 0 0% 30%; /* Gray border */
-    --terminal-glow: 263 83% 57%; /* Indigo-violet glow */
+    --terminal-glow: 263 30% 75%; /* Muted indigo-violet glow */
     
     /* Main theme mapping to terminal colors */
     --background: var(--terminal-bg);
