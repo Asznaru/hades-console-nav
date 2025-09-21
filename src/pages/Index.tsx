@@ -1,7 +1,7 @@
-import TerminalInterface from "@/components/TerminalInterface";
+import AuthenticatedApp from "@/components/AuthenticatedApp";
 
 const Index = () => {
-  return <TerminalInterface />;
+  return <AuthenticatedApp />;
 };
 
 export default Index;

@@ -10,14 +10,14 @@
   :root {
     /* Terminal Core Colors */
     --terminal-bg: 0 0% 0%;
-    --terminal-primary: 120 100% 50%; /* Bright green */
-    --terminal-secondary: 120 100% 35%; /* Darker green */
-    --terminal-accent: 60 100% 50%; /* Yellow/Amber */
+    --terminal-primary: 0 0% 90%; /* White text */
+    --terminal-secondary: 0 0% 70%; /* Light gray */
+    --terminal-accent: 263 83% 57%; /* Indigo-violet for HADES */
     --terminal-warning: 15 100% 50%; /* Orange */
     --terminal-danger: 0 100% 50%; /* Red */
-    --terminal-muted: 120 50% 25%; /* Dark green */
-    --terminal-border: 120 100% 25%; /* Green border */
-    --terminal-glow: 120 100% 50%; /* Green glow */
+    --terminal-muted: 0 0% 40%; /* Dark gray */
+    --terminal-border: 0 0% 30%; /* Gray border */
+    --terminal-glow: 263 83% 57%; /* Indigo-violet glow */
     
     /* Main theme mapping to terminal colors */
     --background: var(--terminal-bg);

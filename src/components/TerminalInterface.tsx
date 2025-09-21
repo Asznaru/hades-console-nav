@@ -10,7 +10,14 @@ import SyslogModule from './ModulePages/SyslogModule';
 import SOSModule from './ModulePages/SOSModule';
 import DarknetModule from './ModulePages/DarknetModule';
 
-const TerminalInterface: React.FC = () => {
+interface TerminalInterfaceProps {
+  userInfo: {
+    nick: string;
+    address: string;
+  };
+}
+
+const TerminalInterface: React.FC<TerminalInterfaceProps> = ({ userInfo }) => {
   const [currentView, setCurrentView] = useState<string>('main');
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
