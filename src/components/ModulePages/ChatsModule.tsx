@@ -18,13 +18,19 @@ const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter' && roomNumber.trim()) {
+      event.preventDefault();
       const cleanRoomNumber = roomNumber.trim();
       if (cleanRoomNumber.startsWith('#')) {
         onJoinRoom?.(cleanRoomNumber);
       } else {
         onJoinRoom?.(`#${cleanRoomNumber}`);
       }
+      setRoomNumber(''); // Clear input after joining
     }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRoomNumber(e.target.value);
   };
 
   return (
@@ -74,19 +80,25 @@ const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
               <input
                 type="text"
                 value={roomNumber}
-                onChange={(e) => setRoomNumber(e.target.value)}
+                onChange={handleInputChange}
                 onKeyDown={handleKeyPress}
                 onFocus={() => setSelectedInput(true)}
                 onBlur={() => setSelectedInput(false)}
                 placeholder="#123-123"
+                autoFocus
                 className={`flex-1 bg-transparent border-none outline-none text-foreground placeholder:text-muted-foreground ${
                   selectedInput ? 'terminal-glow' : ''
-                }`}
+                } focus:terminal-glow`}
+                style={{ 
+                  background: 'transparent',
+                  border: 'none',
+                  outline: 'none'
+                }}
               />
               <span className="terminal-cursor">█</span>
             </div>
             <div className="text-xs text-muted-foreground mt-2">
-              ENTER to join room | Format: #123-123
+              ENTER to join room | Format: #123-123 | Current: {roomNumber || 'empty'}
             </div>
           </div>
           
