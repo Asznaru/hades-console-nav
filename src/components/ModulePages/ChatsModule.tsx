@@ -95,7 +95,7 @@ const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
                   outline: 'none'
                 }}
               />
-              <span className="terminal-cursor">█</span>
+              {selectedInput && <span className="terminal-cursor">█</span>}
             </div>
             <div className="text-xs text-muted-foreground mt-2">
               ENTER to join room | Format: #123-123 | Current: {roomNumber || 'empty'}
@@ -104,7 +104,7 @@ const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
           
           <div className="terminal-border p-2">
             <div className="text-sm text-muted-foreground">
-              {'>'} Type message... <span className="terminal-cursor">█</span>
+              {'>'} Type message... 
             </div>
           </div>
         </div>
