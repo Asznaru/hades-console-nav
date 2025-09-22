@@ -15,6 +15,8 @@ const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
 
   const [roomNumber, setRoomNumber] = useState('');
   const [selectedInput, setSelectedInput] = useState(false);
+  const [currentMessage, setCurrentMessage] = useState('');
+  const [selectedMessageInput, setSelectedMessageInput] = useState(false);
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter' && roomNumber.trim()) {
@@ -95,7 +97,7 @@ const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
                   outline: 'none'
                 }}
               />
-              {selectedInput && <span className="terminal-cursor">█</span>}
+              <span className="terminal-cursor">█</span>
             </div>
             <div className="text-xs text-muted-foreground mt-2">
               ENTER to join room | Format: #123-123 | Current: {roomNumber || 'empty'}
@@ -103,8 +105,23 @@ const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
           </div>
           
           <div className="terminal-border p-2">
-            <div className="text-sm text-muted-foreground">
-              {'>'} Type message... 
+            <div className="flex items-center gap-2">
+              <span className="text-accent">{'>'}</span>
+              <input
+                type="text"
+                value={currentMessage}
+                onChange={(e) => setCurrentMessage(e.target.value)}
+                onFocus={() => setSelectedMessageInput(true)}
+                onBlur={() => setSelectedMessageInput(false)}
+                placeholder="Type message..."
+                className="flex-1 bg-transparent border-none outline-none text-foreground placeholder:text-muted-foreground focus:terminal-glow"
+                style={{ 
+                  background: 'transparent',
+                  border: 'none',
+                  outline: 'none'
+                }}
+              />
+              {selectedMessageInput && <span className="terminal-cursor">█</span>}
             </div>
           </div>
         </div>
