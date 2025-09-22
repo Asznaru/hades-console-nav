@@ -9,6 +9,7 @@ import EchoModule from './ModulePages/EchoModule';
 import SyslogModule from './ModulePages/SyslogModule';
 import SOSModule from './ModulePages/SOSModule';
 import DarknetModule from './ModulePages/DarknetModule';
+import ChatRoomModule from './ModulePages/ChatRoomModule';
 
 interface TerminalInterfaceProps {
   userInfo: {
@@ -20,6 +21,7 @@ interface TerminalInterfaceProps {
 const TerminalInterface: React.FC<TerminalInterfaceProps> = ({ userInfo }) => {
   const [currentView, setCurrentView] = useState<string>('main');
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
+  const [currentChatRoom, setCurrentChatRoom] = useState<string>('');
 
   const menuItems: MenuItem[] = [
     { id: 'news', label: 'News', description: 'System announcements and updates' },
@@ -77,6 +79,16 @@ const TerminalInterface: React.FC<TerminalInterfaceProps> = ({ userInfo }) => {
     setCurrentView(item.id);
   };
 
+  const handleJoinChatRoom = (roomNumber: string) => {
+    setCurrentChatRoom(roomNumber);
+    setCurrentView('chatroom');
+  };
+
+  const handleLeaveChatRoom = () => {
+    setCurrentChatRoom('');
+    setCurrentView('chats');
+  };
+
   const renderCurrentView = () => {
     switch (currentView) {
       case 'news':
@@ -84,7 +96,13 @@ const TerminalInterface: React.FC<TerminalInterfaceProps> = ({ userInfo }) => {
       case 'handel':
         return <HandelModule />;
       case 'chats':
-        return <ChatsModule />;
+        return <ChatsModule onJoinRoom={handleJoinChatRoom} />;
+      case 'chatroom':
+        return <ChatRoomModule 
+          roomNumber={currentChatRoom} 
+          userNick={userInfo.nick}
+          onLeave={handleLeaveChatRoom}
+        />;
       case 'echo':
         return <EchoModule />;
       case 'syslog':
