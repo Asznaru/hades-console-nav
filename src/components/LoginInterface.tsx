@@ -2,13 +2,11 @@ import React, { useState } from 'react';
 import { Input } from '@/components/ui/input';
 
 interface LoginInterfaceProps {
-  onLogin: (nick: string, address: string) => void;
+  onLogin: (nick: string) => void;
 }
 
 const LoginInterface: React.FC<LoginInterfaceProps> = ({ onLogin }) => {
   const [nick, setNick] = useState('');
-  const [address, setAddress] = useState('');
-  const [selectedField, setSelectedField] = useState<'nick' | 'address'>('nick');
 
   const hadesAscii = `
 ██   ██  █████  ██████  ███████ ███████ 
@@ -26,26 +24,18 @@ const LoginInterface: React.FC<LoginInterfaceProps> = ({ onLogin }) => {
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
     switch (event.key) {
-      case 'ArrowUp':
-        event.preventDefault();
-        setSelectedField('nick');
-        break;
-      case 'ArrowDown':
-        event.preventDefault();
-        setSelectedField('address');
-        break;
       case 'Enter':
         event.preventDefault();
-        if (nick.trim() && address.trim()) {
-          onLogin(nick.trim(), address.trim());
+        if (nick.trim()) {
+          onLogin(nick.trim());
         }
         break;
     }
   };
 
   const handleSubmit = () => {
-    if (nick.trim() && address.trim()) {
-      onLogin(nick.trim(), address.trim());
+    if (nick.trim()) {
+      onLogin(nick.trim());
     }
   };
 
@@ -64,30 +54,16 @@ const LoginInterface: React.FC<LoginInterfaceProps> = ({ onLogin }) => {
         <div className="space-y-6 terminal-border p-6" onKeyDown={handleKeyPress}>
           <div className="space-y-4">
             <div>
-              <label className={`block text-sm mb-2 ${selectedField === 'nick' ? 'text-accent' : 'text-muted-foreground'}`}>
-                {selectedField === 'nick' ? '> ' : '  '}[NICKNAME]
+              <label className="block text-sm mb-2 text-accent">
+                {'> '}[NICKNAME]
               </label>
               <Input
                 type="text"
                 value={nick}
                 onChange={(e) => setNick(e.target.value)}
-                className={`bg-background border-border text-foreground ${selectedField === 'nick' ? 'terminal-focused' : ''}`}
+                className="bg-background border-border text-foreground terminal-focused"
                 placeholder="Enter your nickname..."
-                onFocus={() => setSelectedField('nick')}
-              />
-            </div>
-
-            <div>
-              <label className={`block text-sm mb-2 ${selectedField === 'address' ? 'text-accent' : 'text-muted-foreground'}`}>
-                {selectedField === 'address' ? '> ' : '  '}[ADDRESS]
-              </label>
-              <Input
-                type="text"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                className={`bg-background border-border text-foreground ${selectedField === 'address' ? 'terminal-focused' : ''}`}
-                placeholder="Enter your address..."
-                onFocus={() => setSelectedField('address')}
+                autoFocus
               />
             </div>
           </div>
@@ -95,21 +71,20 @@ const LoginInterface: React.FC<LoginInterfaceProps> = ({ onLogin }) => {
           <div className="pt-4">
             <button
               onClick={handleSubmit}
-              disabled={!nick.trim() || !address.trim()}
+              disabled={!nick.trim()}
               className={`w-full py-2 px-4 terminal-border transition-all ${
-                nick.trim() && address.trim() 
+                nick.trim() 
                   ? 'terminal-focused cursor-pointer' 
                   : 'opacity-50 cursor-not-allowed'
               }`}
             >
-              {nick.trim() && address.trim() ? '> ' : '  '}[CONNECT TO SYSTEM]
+              {nick.trim() ? '> ' : '  '}[CONNECT TO SYSTEM]
             </button>
           </div>
 
           <div className="text-xs text-muted-foreground space-y-1">
-            <div>Use ↑↓ arrows to navigate fields</div>
-            <div>ENTER to connect (requires both fields)</div>
-            <div>Status: {nick.trim() && address.trim() ? 'READY' : 'WAITING FOR INPUT'}</div>
+            <div>ENTER to connect</div>
+            <div>Status: {nick.trim() ? 'READY' : 'WAITING FOR INPUT'}</div>
           </div>
         </div>
       </div>

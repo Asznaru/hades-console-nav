@@ -14,7 +14,6 @@ import ChatRoomModule from './ModulePages/ChatRoomModule';
 interface TerminalInterfaceProps {
   userInfo: {
     nick: string;
-    address: string;
   };
 }
 
