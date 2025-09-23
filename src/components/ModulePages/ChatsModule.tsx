@@ -10,7 +10,8 @@ const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
     { id: 2, user: 'CyberPhoenix', lastMsg: 'New contract available', time: '14:15', status: 'away' },
     { id: 3, user: 'GhostProtocol', lastMsg: 'System breach detected in sector 7', time: '13:45', status: 'online' },
     { id: 4, user: 'DataMiner_X', lastMsg: 'Payment confirmed', time: '12:30', status: 'offline' },
-    { id: 5, user: 'NeonViper', lastMsg: 'Meet at the usual coordinates', time: '11:22', status: 'online' },
+    { id: 5, user: 'NeonViper', lastMsg: 'Meet at the usual coordinates', time: '11:22', status: 'blocked' },
+    { id: 6, user: 'RedPhantom', lastMsg: 'Access denied by admin', time: '10:15', status: 'blocked' },
   ];
 
   const [roomNumber, setRoomNumber] = useState('');
@@ -40,11 +41,8 @@ const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
   };
 
   const handleMessageKeyPress = (event: React.KeyboardEvent) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      console.log('Message sent:', currentMessage);
-      setCurrentMessage('');
-    }
+    console.log('Message sent:', currentMessage);
+    setCurrentMessage('');
   };
 
   return (
@@ -66,7 +64,8 @@ const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
                   <div className="flex items-center gap-2">
                     <span className={`w-2 h-2 rounded-full ${
                       chat.status === 'online' ? 'bg-primary' :
-                      chat.status === 'away' ? 'bg-accent' : 'bg-muted'
+                      chat.status === 'away' ? 'bg-accent' : 
+                      chat.status === 'blocked' ? 'bg-rose-500' : 'bg-muted'
                     }`}></span>
                     <span className="text-foreground font-medium">
                       {chat.user}
