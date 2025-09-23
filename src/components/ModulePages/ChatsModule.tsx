@@ -39,8 +39,12 @@ const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRoomNumber(e.target.value);
+  const handleMessageKeyPress = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      console.log('Message sent:', currentMessage);
+      setCurrentMessage('');
+    }
   };
 
   return (
@@ -87,24 +91,9 @@ const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
             </div>
             <div className="flex items-center gap-2">
               <span className="text-accent">{'>'}</span>
-              <input
-                type="text"
-                value={roomNumber}
-                onChange={handleRoomInputChange}
-                onKeyDown={handleKeyPress}
-                onFocus={() => setSelectedInput(true)}
-                onBlur={() => setSelectedInput(false)}
-                placeholder="#123-123"
-                autoFocus
-                className={`flex-1 bg-transparent border-none outline-none text-foreground placeholder:text-muted-foreground ${
-                  selectedInput ? 'terminal-glow' : ''
-                } focus:terminal-glow`}
-                style={{ 
-                  background: 'transparent',
-                  border: 'none',
-                  outline: 'none'
-                }}
-              />
+              <div className="flex-1 text-foreground">
+                {roomNumber || '#123-123'}
+              </div>
               <span className="terminal-cursor">█</span>
             </div>
             <div className="text-xs text-muted-foreground mt-2">
@@ -119,17 +108,16 @@ const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
                 type="text"
                 value={currentMessage}
                 onChange={(e) => setCurrentMessage(e.target.value)}
+                onKeyDown={handleMessageKeyPress}
                 onFocus={() => setSelectedMessageInput(true)}
                 onBlur={() => setSelectedMessageInput(false)}
                 placeholder="Type message..."
-                className="flex-1 bg-transparent border-none outline-none text-foreground placeholder:text-muted-foreground focus:terminal-glow"
-                style={{ 
-                  background: 'transparent',
-                  border: 'none',
-                  outline: 'none'
-                }}
+                className="flex-1 bg-transparent border-none outline-none text-foreground placeholder:text-muted-foreground"
               />
               {selectedMessageInput && <span className="terminal-cursor">█</span>}
+            </div>
+            <div className="text-xs text-muted-foreground mt-1">
+              Current message: {currentMessage || 'empty'}
             </div>
           </div>
         </div>
