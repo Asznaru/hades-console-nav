@@ -31,6 +31,14 @@ const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
     }
   };
 
+  const handleRoomInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Allow numbers, hyphens, and hash symbol
+    if (/^[#0-9-]*$/.test(value)) {
+      setRoomNumber(value);
+    }
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRoomNumber(e.target.value);
   };
@@ -82,7 +90,7 @@ const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
               <input
                 type="text"
                 value={roomNumber}
-                onChange={handleInputChange}
+                onChange={handleRoomInputChange}
                 onKeyDown={handleKeyPress}
                 onFocus={() => setSelectedInput(true)}
                 onBlur={() => setSelectedInput(false)}

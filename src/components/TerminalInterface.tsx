@@ -7,8 +7,6 @@ import HandelModule from './ModulePages/HandelModule';
 import ChatsModule from './ModulePages/ChatsModule';
 import EchoModule from './ModulePages/EchoModule';
 import SyslogModule from './ModulePages/SyslogModule';
-import SOSModule from './ModulePages/SOSModule';
-import DarknetModule from './ModulePages/DarknetModule';
 import ChatRoomModule from './ModulePages/ChatRoomModule';
 
 interface TerminalInterfaceProps {
@@ -28,8 +26,6 @@ const TerminalInterface: React.FC<TerminalInterfaceProps> = ({ userInfo }) => {
     { id: 'chats', label: 'Chats', description: 'Secure communications' },
     { id: 'echo', label: 'Echo', description: 'Network diagnostics and ping' },
     { id: 'syslog', label: 'Syslog', description: 'System logs and monitoring' },
-    { id: 'sos', label: 'SOS', description: 'Emergency protocols' },
-    { id: 'darknet', label: 'Darknet', description: 'Tor hidden services' },
   ];
 
   const handleKeyPress = useCallback((event: KeyboardEvent) => {
@@ -106,10 +102,6 @@ const TerminalInterface: React.FC<TerminalInterfaceProps> = ({ userInfo }) => {
         return <EchoModule />;
       case 'syslog':
         return <SyslogModule />;
-      case 'sos':
-        return <SOSModule />;
-      case 'darknet':
-        return <DarknetModule />;
       default:
         return (
           <NavigationMenu

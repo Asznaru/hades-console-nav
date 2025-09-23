@@ -18,9 +18,9 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({
   onSelect 
 }) => {
   return (
-    <div className="flex-1 p-6">
-      <div className="max-w-2xl mx-auto">
-        <h2 className="text-xl mb-6 terminal-glow text-accent">
+    <div className="flex-1 p-6 flex items-center justify-center">
+      <div className="max-w-2xl w-full">
+        <h2 className="text-xl mb-6 terminal-glow text-accent text-center">
           [MAIN MENU] - Select Module
         </h2>
         
