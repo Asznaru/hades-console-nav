@@ -41,8 +41,7 @@ const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
   };
 
   const handleMessageKeyPress = (event: React.KeyboardEvent) => {
-    console.log('Message sent:', currentMessage);
-    setCurrentMessage('');
+    console.log(event)
   };
 
   return (
