@@ -4,7 +4,6 @@ const TerminalLegend: React.FC = () => {
   const controls = [
     { key: '↑↓', action: 'Navigate Menu' },
     { key: 'ENTER', action: 'Select/Confirm' },
-    { key: 'BACKSPACE', action: 'Go Back' },
     { key: 'ESC', action: 'Return to Main' },
   ];
 

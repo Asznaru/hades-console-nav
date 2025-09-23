@@ -65,15 +65,19 @@ const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
               <input
                 type="text"
                 value={roomNumber}
-                onChange={(e) => setRoomNumber(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  // Enforce # as first character
+                  if (value === '' || value.startsWith('#')) {
+                    setRoomNumber(value);
+                  } else if (!roomNumber.startsWith('#')) {
+                    setRoomNumber('#' + value);
+                  }
+                }}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter' && roomNumber.trim()) {
+                  if (e.key === 'Enter' && roomNumber.trim() && roomNumber.length > 1) {
                     const cleanRoomNumber = roomNumber.trim();
-                    if (cleanRoomNumber.startsWith('#')) {
-                      onJoinRoom?.(cleanRoomNumber);
-                    } else {
-                      onJoinRoom?.(`#${cleanRoomNumber}`);
-                    }
+                    onJoinRoom?.(cleanRoomNumber);
                     setRoomNumber('');
                   }
                 }}
