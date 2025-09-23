@@ -34,7 +34,7 @@ const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
 
   const handleMessageKeyPress = (event: React.KeyboardEvent) => {
     console.log(event)
-    if (/^[#0-9-]*$/.test(value)) {
+    if (/^[#0-9-]*$/.test(event)) {
       setCurrentMessage(event)
     }
   };
