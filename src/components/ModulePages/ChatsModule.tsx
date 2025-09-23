@@ -6,9 +6,9 @@ interface ChatsModuleProps {
 
 const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
   const activeChats = [
-    { id: 1, user: 'Shadow_Walker', lastMsg: 'Package delivered successfully', time: '14:32', status: 'online' },
-    { id: 2, user: 'CyberPhoenix', lastMsg: 'New contract available', time: '14:15', status: 'away' },
-    { id: 3, user: 'GhostProtocol', lastMsg: 'System breach detected in sector 7', time: '13:45', status: 'online' },
+    { id: 1, user: 'Shadow_Walker', lastMsg: 'Package delivered successfully', time: '14:32', status: 'blocked' },
+    { id: 2, user: 'CyberPhoenix', lastMsg: 'New contract available', time: '14:15', status: 'blocked' },
+    { id: 3, user: 'GhostProtocol', lastMsg: 'System breach detected in sector 7', time: '13:45', status: 'blocked' },
     { id: 4, user: 'DataMiner_X', lastMsg: 'Payment confirmed', time: '12:30', status: 'offline' },
     { id: 5, user: 'NeonViper', lastMsg: 'Meet at the usual coordinates', time: '11:22', status: 'blocked' },
     { id: 6, user: 'RedPhantom', lastMsg: 'Access denied by admin', time: '10:15', status: 'blocked' },
@@ -32,16 +32,10 @@ const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
     }
   };
 
-  const handleRoomInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    // Allow numbers, hyphens, and hash symbol
-    if (/^[#0-9-]*$/.test(value)) {
-      setRoomNumber(value);
-    }
-  };
-
   const handleMessageKeyPress = (event: React.KeyboardEvent) => {
-    console.log(event)
+    if (/^[#0-9-]*$/.test(value)) {
+      setCurrentMessage(event)
+    }
   };
 
   return (
@@ -92,7 +86,6 @@ const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
               <div className="flex-1 text-foreground">
                 {roomNumber || '#123-123'}
               </div>
-              <span className="terminal-cursor">█</span>
             </div>
             <div className="text-xs text-muted-foreground mt-2">
               ENTER to join room | Format: #123-123 | Current: {roomNumber || 'empty'}
@@ -106,7 +99,6 @@ const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
                 type="text"
                 value={currentMessage}
                 onChange={(e) => setCurrentMessage(e.target.value)}
-                onKeyDown={handleMessageKeyPress}
                 onFocus={() => setSelectedMessageInput(true)}
                 onBlur={() => setSelectedMessageInput(false)}
                 placeholder="Type message..."
