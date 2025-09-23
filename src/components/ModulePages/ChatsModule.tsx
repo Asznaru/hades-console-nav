@@ -15,11 +15,7 @@ const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
   ];
 
   const [currentMessage, setCurrentMessage] = useState('');
-
-  const handleMessageKeyPress = (event: React.KeyboardEvent) => {
-    console.log(event)
-    setCurrentMessage(event)
-  };
+  const [roomNumber, setRoomNumber] = useState('');
 
   return (
     <div className="flex-1 p-6">
@@ -66,9 +62,25 @@ const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
             </div>
             <div className="flex items-center gap-2">
               <span className="text-accent">{'>'}</span>
-              <div className="flex-1 text-foreground">
-                {roomNumber || '#123-123'}
-              </div>
+              <input
+                type="text"
+                value={roomNumber}
+                onChange={(e) => setRoomNumber(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && roomNumber.trim()) {
+                    const cleanRoomNumber = roomNumber.trim();
+                    if (cleanRoomNumber.startsWith('#')) {
+                      onJoinRoom?.(cleanRoomNumber);
+                    } else {
+                      onJoinRoom?.(`#${cleanRoomNumber}`);
+                    }
+                    setRoomNumber('');
+                  }
+                }}
+                placeholder="#123-123"
+                className="flex-1 bg-transparent border-none outline-none text-foreground placeholder:text-muted-foreground"
+              />
+              <span className="terminal-cursor">█</span>
             </div>
             <div className="text-xs text-muted-foreground mt-2">
               ENTER to join room | Format: #123-123 | Current: {roomNumber || 'empty'}
@@ -81,11 +93,17 @@ const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
               <input
                 type="text"
                 value={currentMessage}
-                onChange={(e) => handleMessageKeyPress(e.target.value)}
+                onChange={(e) => setCurrentMessage(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    console.log('Message sent:', currentMessage);
+                    setCurrentMessage('');
+                  }
+                }}
                 placeholder="Type message..."
                 className="flex-1 bg-transparent border-none outline-none text-foreground placeholder:text-muted-foreground"
               />
-              {selectedMessageInput && <span className="terminal-cursor">█</span>}
+              <span className="terminal-cursor">█</span>
             </div>
             <div className="text-xs text-muted-foreground mt-1">
               Current message: {currentMessage || 'empty'}

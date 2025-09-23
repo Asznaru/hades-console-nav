@@ -29,36 +29,29 @@ const TerminalInterface: React.FC<TerminalInterfaceProps> = ({ userInfo }) => {
   ];
 
   const handleKeyPress = useCallback((event: KeyboardEvent) => {
-    event.preventDefault();
+    // Only handle navigation keys when in main menu and not typing in inputs
+    if (currentView !== 'main' || (event.target as HTMLElement)?.tagName === 'INPUT') {
+      return;
+    }
     
     switch (event.key) {
       case 'ArrowUp':
-        if (currentView === 'main') {
-          setSelectedIndex(prev => 
-            prev > 0 ? prev - 1 : menuItems.length - 1
-          );
-        }
+        event.preventDefault();
+        setSelectedIndex(prev => 
+          prev > 0 ? prev - 1 : menuItems.length - 1
+        );
         break;
         
       case 'ArrowDown':
-        if (currentView === 'main') {
-          setSelectedIndex(prev => 
-            prev < menuItems.length - 1 ? prev + 1 : 0
-          );
-        }
+        event.preventDefault();
+        setSelectedIndex(prev => 
+          prev < menuItems.length - 1 ? prev + 1 : 0
+        );
         break;
         
       case 'Enter':
-        if (currentView === 'main') {
-          setCurrentView(menuItems[selectedIndex].id);
-        }
-        break;
-        
-      case 'Backspace':
-      case 'Escape':
-        if (currentView !== 'main') {
-          setCurrentView('main');
-        }
+        event.preventDefault();
+        setCurrentView(menuItems[selectedIndex].id);
         break;
     }
   }, [currentView, selectedIndex, menuItems]);
