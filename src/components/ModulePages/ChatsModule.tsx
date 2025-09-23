@@ -33,6 +33,7 @@ const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
   };
 
   const handleMessageKeyPress = (event: React.KeyboardEvent) => {
+    console.log(event)
     if (/^[#0-9-]*$/.test(value)) {
       setCurrentMessage(event)
     }
