@@ -14,29 +14,11 @@ const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
     { id: 6, user: 'RedPhantom', lastMsg: 'Access denied by admin', time: '10:15', status: 'blocked' },
   ];
 
-  const [roomNumber, setRoomNumber] = useState('');
-  const [selectedInput, setSelectedInput] = useState(false);
   const [currentMessage, setCurrentMessage] = useState('');
-  const [selectedMessageInput, setSelectedMessageInput] = useState(false);
-
-  const handleKeyPress = (event: React.KeyboardEvent) => {
-    if (event.key === 'Enter' && roomNumber.trim()) {
-      event.preventDefault();
-      const cleanRoomNumber = roomNumber.trim();
-      if (cleanRoomNumber.startsWith('#')) {
-        onJoinRoom?.(cleanRoomNumber);
-      } else {
-        onJoinRoom?.(`#${cleanRoomNumber}`);
-      }
-      setRoomNumber(''); // Clear input after joining
-    }
-  };
 
   const handleMessageKeyPress = (event: React.KeyboardEvent) => {
     console.log(event)
-    if (/^[#0-9-]*$/.test(event)) {
-      setCurrentMessage(event)
-    }
+    setCurrentMessage(event)
   };
 
   return (
@@ -99,9 +81,7 @@ const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
               <input
                 type="text"
                 value={currentMessage}
-                onChange={(e) => setCurrentMessage(e.target.value)}
-                onFocus={() => setSelectedMessageInput(true)}
-                onBlur={() => setSelectedMessageInput(false)}
+                onChange={(e) => handleMessageKeyPress(e.target.value)}
                 placeholder="Type message..."
                 className="flex-1 bg-transparent border-none outline-none text-foreground placeholder:text-muted-foreground"
               />
