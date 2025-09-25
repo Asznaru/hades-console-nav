@@ -12,6 +12,7 @@ const ChatsModule: React.FC<ChatsModuleProps> = ({ onJoinRoom }) => {
     { id: 4, user: 'DataMiner_X', lastMsg: 'Payment confirmed', time: '12:30', status: 'offline' },
     { id: 5, user: 'NeonViper', lastMsg: 'Meet at the usual coordinates', time: '11:22', status: 'blocked' },
     { id: 6, user: 'RedPhantom', lastMsg: 'Access denied by admin', time: '10:15', status: 'blocked' },
+    { id: 7, user: 'Cams', lastMsg: '4 camera feeds active', time: '15:00', status: 'online' },
   ];
 
   const [currentMessage, setCurrentMessage] = useState('');
