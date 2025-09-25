@@ -8,6 +8,7 @@ import ChatsModule from './ModulePages/ChatsModule';
 import EchoModule from './ModulePages/EchoModule';
 import SyslogModule from './ModulePages/SyslogModule';
 import ChatRoomModule from './ModulePages/ChatRoomModule';
+import CamsModule from './ModulePages/CamsModule';
 
 interface TerminalInterfaceProps {
   userInfo: {
@@ -24,6 +25,7 @@ const TerminalInterface: React.FC<TerminalInterfaceProps> = ({ userInfo }) => {
     { id: 'news', label: 'News', description: 'System announcements and updates' },
     { id: 'handel', label: 'Handel', description: 'Underground market access' },
     { id: 'chats', label: 'Chats', description: 'Secure communications' },
+    { id: 'cams', label: 'Cams', description: 'Surveillance camera network' },
     { id: 'echo', label: 'Echo', description: 'Network diagnostics and ping' },
     { id: 'syslog', label: 'Syslog', description: 'System logs and monitoring' },
   ];
@@ -91,6 +93,8 @@ const TerminalInterface: React.FC<TerminalInterfaceProps> = ({ userInfo }) => {
           userNick={userInfo.nick}
           onLeave={handleLeaveChatRoom}
         />;
+      case 'cams':
+        return <CamsModule />;
       case 'echo':
         return <EchoModule />;
       case 'syslog':
