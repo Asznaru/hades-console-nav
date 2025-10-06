@@ -24,7 +24,7 @@ const SOSModule: React.FC = () => {
     canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
-    const chars = 'ハミヒーウシナモニサワツオリアホテマケメエカキムユラセネスタヌヘ01';
+    const chars = '01$#%&*@!<>[]{}()/\\|~^+-=?:;.,ABCDEFabcdef';
     const fontSize = 14;
     const columns = canvas.width / fontSize;
     const drops: number[] = Array(Math.floor(columns)).fill(1);
@@ -33,8 +33,10 @@ const SOSModule: React.FC = () => {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.fillStyle = '#0F0';
+      ctx.fillStyle = 'hsl(var(--primary))';
       ctx.font = `${fontSize}px monospace`;
+      ctx.shadowBlur = 5;
+      ctx.shadowColor = 'hsl(var(--primary))';
 
       for (let i = 0; i < drops.length; i++) {
         const text = chars[Math.floor(Math.random() * chars.length)];
