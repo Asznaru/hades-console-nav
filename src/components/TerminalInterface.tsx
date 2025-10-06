@@ -9,6 +9,7 @@ import EchoModule from './ModulePages/EchoModule';
 import SyslogModule from './ModulePages/SyslogModule';
 import ChatRoomModule from './ModulePages/ChatRoomModule';
 import CamsModule from './ModulePages/CamsModule';
+import DarknetModule from './ModulePages/DarknetModule';
 
 interface TerminalInterfaceProps {
   userInfo: {
@@ -26,6 +27,7 @@ const TerminalInterface: React.FC<TerminalInterfaceProps> = ({ userInfo }) => {
     { id: 'handel', label: 'Handel', description: 'Underground market access' },
     { id: 'chats', label: 'Chats', description: 'Secure communications' },
     { id: 'cams', label: 'Cams', description: 'Surveillance camera network' },
+    { id: 'darknet', label: 'Darknet', description: 'Message decryption system' },
     { id: 'echo', label: 'Echo', description: 'Network diagnostics and ping' },
     { id: 'syslog', label: 'Syslog', description: 'System logs and monitoring' },
   ];
@@ -95,6 +97,8 @@ const TerminalInterface: React.FC<TerminalInterfaceProps> = ({ userInfo }) => {
         />;
       case 'cams':
         return <CamsModule />;
+      case 'darknet':
+        return <DarknetModule />;
       case 'echo':
         return <EchoModule />;
       case 'syslog':
