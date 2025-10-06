@@ -1,77 +1,221 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Input } from '@/components/ui/input';
 
 const SOSModule: React.FC = () => {
-  const emergencyContacts = [
-    { id: 1, name: 'Emergency Response Team', freq: '156.800 MHz', status: 'ACTIVE', priority: 'CRITICAL' },
-    { id: 2, name: 'Security Backup Unit', freq: '162.425 MHz', status: 'STANDBY', priority: 'HIGH' },
-    { id: 3, name: 'Medical Support', freq: '155.340 MHz', status: 'ACTIVE', priority: 'HIGH' },
-    { id: 4, name: 'Technical Support', freq: '151.820 MHz', status: 'AVAILABLE', priority: 'MEDIUM' },
-    { id: 5, name: 'Evacuation Coordinator', freq: '158.730 MHz', status: 'STANDBY', priority: 'CRITICAL' },
-  ];
+  const [input, setInput] = useState('');
+  const [logs, setLogs] = useState<string[]>([
+    '> INITIALIZING BREACH PROTOCOL...',
+    '> SYSTEM: HADES TERMINAL v2.7.3',
+    '> STATUS: AWAITING COMMAND SEQUENCE',
+  ]);
+  const [hackProgress, setHackProgress] = useState(0);
+  const [isHacking, setIsHacking] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Matrix rain effect
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    const chars = 'ハミヒーウシナモニサワツオリアホテマケメエカキムユラセネスタヌヘ01';
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops: number[] = Array(Math.floor(columns)).fill(1);
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#0F0';
+      ctx.font = `${fontSize}px monospace`;
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    };
+
+    const interval = setInterval(draw, 33);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  const addLog = (message: string) => {
+    setLogs(prev => [...prev, message]);
+  };
+
+  const simulateHack = () => {
+    setIsHacking(true);
+    setHackProgress(0);
+    addLog('> INITIATING BREACH SEQUENCE...');
+    addLog('> SCANNING FOR VULNERABILITIES...');
+
+    const steps = [
+      { progress: 15, message: '> BYPASS: Firewall Layer 1... SUCCESS' },
+      { progress: 30, message: '> EXPLOIT: Buffer overflow detected... EXPLOITING' },
+      { progress: 45, message: '> DECRYPT: SSH keys... DECRYPTED' },
+      { progress: 60, message: '> INJECT: Payload delivery... INJECTED' },
+      { progress: 75, message: '> ESCALATE: Privilege escalation... ROOT ACCESS' },
+      { progress: 90, message: '> OVERRIDE: System controls... OVERRIDDEN' },
+      { progress: 100, message: '> BREACH COMPLETE: Full system access granted' },
+    ];
+
+    let currentStep = 0;
+    const interval = setInterval(() => {
+      if (currentStep < steps.length) {
+        setHackProgress(steps[currentStep].progress);
+        addLog(steps[currentStep].message);
+        currentStep++;
+      } else {
+        clearInterval(interval);
+        setIsHacking(false);
+        addLog('> STATUS: HADES TERMINAL COMPROMISED');
+        addLog('> [WARNING] Full administrative access obtained');
+      }
+    }, 800);
+  };
+
+  const handleCommand = (cmd: string) => {
+    const trimmed = cmd.trim().toLowerCase();
+    addLog(`> ${cmd}`);
+
+    switch (trimmed) {
+      case 'hack':
+      case 'breach':
+      case 'override':
+        if (!isHacking) {
+          simulateHack();
+        } else {
+          addLog('> ERROR: Breach already in progress');
+        }
+        break;
+      case 'status':
+        addLog(`> PROGRESS: ${hackProgress}%`);
+        addLog(`> SYSTEM: ${hackProgress === 100 ? 'COMPROMISED' : 'SECURED'}`);
+        break;
+      case 'clear':
+        setLogs([]);
+        setHackProgress(0);
+        break;
+      case 'help':
+        addLog('> AVAILABLE COMMANDS:');
+        addLog('  hack/breach/override - Initiate system breach');
+        addLog('  status - Check breach progress');
+        addLog('  clear - Clear terminal');
+        addLog('  help - Show this message');
+        break;
+      default:
+        addLog('> ERROR: Unknown command. Type "help" for available commands');
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (input.trim()) {
+      handleCommand(input);
+      setInput('');
+    }
+  };
 
   return (
-    <div className="flex-1 p-6">
-      <div className="terminal-border p-4 h-full">
-        <div className="text-center mb-6">
-          <h2 className="text-2xl mb-2 terminal-glow text-destructive animate-pulse">
-            [SOS MODULE] - EMERGENCY PROTOCOLS
-          </h2>
-          <div className="text-accent terminal-glow">
-            ⚠️ EMERGENCY COMMUNICATION SYSTEM ⚠️
-          </div>
-        </div>
-        
-        <div className="mb-6 text-center">
-          <div className="inline-block terminal-border p-4 bg-destructive bg-opacity-20">
-            <div className="text-xl text-destructive font-bold">
-              EMERGENCY BEACON STATUS: READY
-            </div>
-            <div className="text-sm text-muted-foreground mt-2">
-              GPS Coordinates: 40.7128° N, 74.0060° W
+    <div className="flex-1 flex flex-col relative overflow-hidden">
+      {/* Matrix Background */}
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 opacity-20 pointer-events-none"
+        style={{ width: '100%', height: '100%' }}
+      />
+
+      <div className="flex-1 flex flex-col p-6 relative z-10">
+        <div className="max-w-4xl w-full mx-auto flex flex-col flex-1">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl terminal-glow text-accent animate-pulse">
+              [S.O.S] - System Override Sequence
+            </h2>
+            <div className="text-xs font-mono text-primary">
+              ACCESS LEVEL: {hackProgress === 100 ? 'ROOT' : 'RESTRICTED'}
             </div>
           </div>
-        </div>
-        
-        <div className="space-y-3">
-          {emergencyContacts.map((contact) => (
-            <div key={contact.id} className="terminal-border p-3 hover:terminal-focused transition-all">
-              <div className="flex justify-between items-center">
-                <div className="flex-1">
-                  <div className="text-foreground font-medium">
-                    {contact.name}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    Frequency: {contact.freq}
-                  </div>
-                </div>
-                <div className="text-right">
-                  <div className={`text-xs px-2 py-1 terminal-border ${
-                    contact.priority === 'CRITICAL' ? 'text-destructive' :
-                    contact.priority === 'HIGH' ? 'text-accent' : 'text-primary'
-                  }`}>
-                    {contact.priority}
-                  </div>
-                  <div className={`text-xs mt-1 ${
-                    contact.status === 'ACTIVE' ? 'text-primary' :
-                    contact.status === 'STANDBY' ? 'text-accent' : 'text-muted-foreground'
-                  }`}>
-                    {contact.status}
-                  </div>
-                </div>
+
+          {/* Breach Progress */}
+          <div className="mb-4 p-4 border border-primary/50 rounded bg-background/80 backdrop-blur">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-mono text-primary">BREACH PROGRESS</span>
+              <span className="text-xs font-mono text-accent">{hackProgress}%</span>
+            </div>
+            <div className="w-full h-2 bg-background border border-border rounded overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-primary via-accent to-primary transition-all duration-500"
+                style={{ 
+                  width: `${hackProgress}%`,
+                  boxShadow: hackProgress > 0 ? '0 0 10px hsl(var(--primary))' : 'none'
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Terminal Output */}
+          <div className="flex-1 mb-4 p-4 border border-border rounded bg-background/80 backdrop-blur font-mono text-xs overflow-y-auto min-h-[300px] max-h-[400px] terminal-glow">
+            {logs.map((log, idx) => (
+              <div
+                key={idx}
+                className={`mb-1 ${
+                  log.includes('SUCCESS') || log.includes('COMPLETE')
+                    ? 'text-accent'
+                    : log.includes('ERROR') || log.includes('WARNING')
+                    ? 'text-destructive'
+                    : 'text-foreground'
+                }`}
+              >
+                {log}
               </div>
-            </div>
-          ))}
-        </div>
-        
-        <div className="mt-6 text-center">
-          <div className="terminal-border p-3 bg-destructive bg-opacity-10">
-            <div className="text-destructive font-bold">
-              EMERGENCY TRANSMISSION READY
-            </div>
-            <div className="text-sm text-muted-foreground mt-1">
-              Press ENTER to initiate emergency broadcast
-            </div>
+            ))}
+            {isHacking && (
+              <div className="text-primary animate-pulse">
+                {'> '}{'█'.repeat(Math.floor(Math.random() * 20))}
+              </div>
+            )}
           </div>
+
+          {/* Command Input */}
+          <form onSubmit={handleSubmit} className="flex gap-2">
+            <div className="flex-1 relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-primary font-mono text-sm">
+                root@hades:~#
+              </span>
+              <Input
+                ref={inputRef}
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="enter command..."
+                className="font-mono pl-32 bg-background/80 backdrop-blur border-primary/50"
+                disabled={isHacking}
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={isHacking}
+              className="px-6 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed font-mono text-sm terminal-glow"
+            >
+              {isHacking ? 'EXECUTING...' : 'EXECUTE'}
+            </button>
+          </form>
         </div>
       </div>
     </div>
