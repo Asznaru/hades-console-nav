@@ -44,8 +44,8 @@ const SOSModule: React.FC = () => {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Set text style
-      ctx.fillStyle = 'hsl(var(--primary))';
+      // Set text style with green/cyan color for terminal look
+      ctx.fillStyle = '#00ff88';
       ctx.font = `${fontSize}px monospace`;
 
       for (let i = 0; i < drops.length; i++) {
@@ -160,7 +160,8 @@ const SOSModule: React.FC = () => {
       {/* Matrix Background */}
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 opacity-30 pointer-events-none"
+        className="fixed inset-0 w-full h-full opacity-30 pointer-events-none"
+        style={{ zIndex: 0 }}
       />
 
       <div className="flex-1 flex flex-col p-6 relative z-10">
