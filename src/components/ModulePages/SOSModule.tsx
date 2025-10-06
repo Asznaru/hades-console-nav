@@ -21,36 +21,57 @@ const SOSModule: React.FC = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
+    // Set canvas size
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
 
     const chars = '01$#%&*@!<>[]{}()/\\|~^+-=?:;.,ABCDEFabcdef';
-    const fontSize = 14;
-    const columns = canvas.width / fontSize;
-    const drops: number[] = Array(Math.floor(columns)).fill(1);
+    const fontSize = 16;
+    const columns = Math.floor(canvas.width / fontSize);
+    const drops: number[] = [];
+    
+    // Initialize drops with random positions
+    for (let i = 0; i < columns; i++) {
+      drops[i] = Math.random() * -100;
+    }
 
     const draw = () => {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      // Semi-transparent black to create fade effect
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+      // Set text style
       ctx.fillStyle = 'hsl(var(--primary))';
       ctx.font = `${fontSize}px monospace`;
-      ctx.shadowBlur = 5;
-      ctx.shadowColor = 'hsl(var(--primary))';
 
       for (let i = 0; i < drops.length; i++) {
+        // Random character
         const text = chars[Math.floor(Math.random() * chars.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
 
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        ctx.fillText(text, x, y);
+
+        // Reset drop to top randomly after it crosses the screen
+        if (y > canvas.height && Math.random() > 0.975) {
           drops[i] = 0;
         }
+
+        // Move drop down
         drops[i]++;
       }
     };
 
-    const interval = setInterval(draw, 33);
-    return () => clearInterval(interval);
+    const animationInterval = setInterval(draw, 50);
+    
+    return () => {
+      clearInterval(animationInterval);
+      window.removeEventListener('resize', resizeCanvas);
+    };
   }, []);
 
   useEffect(() => {
@@ -139,8 +160,7 @@ const SOSModule: React.FC = () => {
       {/* Matrix Background */}
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 opacity-20 pointer-events-none"
-        style={{ width: '100%', height: '100%' }}
+        className="absolute inset-0 opacity-30 pointer-events-none"
       />
 
       <div className="flex-1 flex flex-col p-6 relative z-10">
