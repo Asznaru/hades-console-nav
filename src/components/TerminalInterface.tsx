@@ -11,6 +11,7 @@ import ChatRoomModule from './ModulePages/ChatRoomModule';
 import CamsModule from './ModulePages/CamsModule';
 import DarknetModule from './ModulePages/DarknetModule';
 import SOSModule from './ModulePages/SOSModule';
+import ReportModule from './ModulePages/ReportModule';
 
 interface TerminalInterfaceProps {
   userInfo: {
@@ -30,6 +31,7 @@ const TerminalInterface: React.FC<TerminalInterfaceProps> = ({ userInfo }) => {
     { id: 'cams', label: 'Cams', description: 'Surveillance camera network' },
     { id: 'darknet', label: 'Darknet', description: 'Message decryption system' },
     { id: 'sos', label: 'S.O.S', description: 'System Override Sequence' },
+    { id: 'report', label: 'Report', description: 'Agent report submission' },
     { id: 'echo', label: 'Echo', description: 'Network diagnostics and ping' },
     { id: 'syslog', label: 'Syslog', description: 'System logs and monitoring' },
   ];
@@ -103,6 +105,8 @@ const TerminalInterface: React.FC<TerminalInterfaceProps> = ({ userInfo }) => {
         return <DarknetModule />;
       case 'sos':
         return <SOSModule />;
+      case 'report':
+        return <ReportModule />;
       case 'echo':
         return <EchoModule />;
       case 'syslog':
