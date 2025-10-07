@@ -13,23 +13,13 @@ const GlitchEffect: React.FC = () => {
       }, 300);
     };
 
-    // Random interval between 5-15 seconds
-    const getRandomInterval = () => {
-      return Math.random() * 10000 + 5000; // 5-15 seconds
-    };
-
-    const scheduleNextGlitch = () => {
-      const interval = getRandomInterval();
-      return setTimeout(() => {
-        triggerGlitch();
-        scheduleNextGlitch();
-      }, interval);
-    };
-
-    const timeoutId = scheduleNextGlitch();
+    // Trigger glitch every second
+    const intervalId = setInterval(() => {
+      triggerGlitch();
+    }, 1000); // 1 second
 
     return () => {
-      clearTimeout(timeoutId);
+      clearInterval(intervalId);
     };
   }, []);
 
